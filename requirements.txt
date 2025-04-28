@@ -1,0 +1,4 @@
+numpy>=1.18.0
+matplotlib>=3.0.0
+tomlkit>=0.10.0
+pythtb>=1.7.2 

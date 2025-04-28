@@ -1,0 +1,43 @@
+poscar_filename = "Mn2N.vasp" # POSCAR文件名
+output_filename = "Mn2N_model" # 输出能带图文件名，默认png格式
+output_format = "png" # 输出格式，默认png格式
+savedir = "." # 保存路径
+
+# 建模参数
+use_elements = ["Mn", "N"] # 需要建模的元素
+lattice_constant = 1    # 晶格常数
+t0 = 1.0                # 参考跃迁强度
+t0_distance = 2.5 # 参考跃迁距离，指定t0的距离
+hopping_decay = 1       # 跃迁衰减系数，
+# t = t0*exp(-hopping_decay*(r-t0_distance)/t0_distance)
+same_atom_negative_coupling = false # 如果两个原子是同一种元素，则耦合强度为负(没必要，但是可以)
+onsite_energy = [0.5, 0.5, 0.7] # 每个原子的在位能
+min_distance = 0.1      # 最小跃迁距离，小于这个距离不考虑跃迁
+max_distance = 2.6      # 最大跃迁距离，超出此距离不考虑跃迁
+max_neighbors = 2       # 最大相邻格点数, R的搜寻范围
+dimk = 2                # k空间维度
+dimr = 3                # r空间维度， 一般不要改，因为POSCAR都是3维的
+
+# 磁性参数
+nspin = 2 # 自旋，1表示没有自旋，2表示有自旋
+magnetic_moment = 0.1  # 磁矩大小
+magnetic_order = "+-0" # 磁序，+表示向上，-表示向下，0表示没有磁性
+
+# 定义k点路径
+kpath = [
+    [0, 0],
+    [0.5,0],
+    [0.5,0.5],
+    [0.0,0.5],
+    [0.0,0.0],
+    [0.5, 0.5]
+]
+klabel = ["G","X","M","Y","G","M"]# 定义k点标签
+nkpt=1000 # 定义k点数目
+
+
+# 其他参数
+is_print_tb_model_hop = true # 是否打印紧束缚模型信息
+is_print_tb_model = true # 是否打印紧束缚模型
+is_check_flat_bands = true # 是否检查平带
+
