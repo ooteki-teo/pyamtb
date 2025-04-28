@@ -19,7 +19,7 @@ PyAMTB (Python Altermagnet Tight Binding) is built on top of the PythTB package,
 ### From PyPI
 
 ```bash
-pip install pyamtb
+pip install pyamtb --upgrade
 ```
 
 ### From source
@@ -40,53 +40,65 @@ The package provides a command-line interface for easy calculations:
 # Show help and available commands
 pyamtb --help
 
+# Calculate distances between atoms
+pyamtb distance --poscar POSCAR --element1 Mn --element2 N
+# check the ditance, determin max_distance
+
+# create a template.toml file
+pyamtb template 
+
 # Calculate band structure using configuration file
 pyamtb calculate --config config.toml --poscar POSCAR
 
-# Calculate distances between atoms
-pyamtb distance --poscar POSCAR --element1 Mn --element2 N
 ```
 
 ### Configuration
 
-The package uses TOML files for configuration. Here's an example configuration file (`config.toml`):
+The package uses TOML files for configuration. Here's an example configuration file (`tbparas.toml`):
 
 ```toml
 # Basic parameters
-dimk = 3                    # Dimension of k-space (1, 2, or 3)
-dimr = 3                    # Dimension of real space
+poscar="Mn2N.vasp"
+dimk = 2                    # **important** Dimension of k-space (1, 2, or 3) 
+dimr = 3                    # Dimension of real space, do not change this
 nspin = 2                   # Number of spin components (1 or 2)
 a0 = 1.0                    # Lattice constant scaling factor
 
 # Band structure calculation
-k_path = ["G", "X", "M", "G"]  # k-point path
-num_k_points = 100             # Number of k-points
-k_labels = ["Γ", "X", "M", "Γ"]  # k-point labels
+k_path = [
+[0.0,0.0],
+[0.5,0.0],
+[0.5,0.5],
+[0.0,0.5],
+[0.0,0.0]
+]  # k-point path
+nkpt = 100             # Number of k-points
+k_labels = ["Γ", "X", "M", "Y", "Γ"]  # k-point labels
 
 # Hopping parameters
 t0 = 1.0                      # Reference hopping strength
-t0_distance = 2.0             # Reference distance
-lambda_ = 1.0                 # Decay parameter
-max_neighbors = 2             # Maximum number of neighbors to consider
-max_distance = 10.0           # Maximum hopping distance
-mindist = 0.1                 # Minimum hopping distance
+t0_distance = 2.5             # **important** Reference distance 
+hopping_decay = 1.0                 # Decay parameter 
+max_neighbors = 2             # Maximum number of neighbors to consider 
+max_distance = 3.5           # **important** Maximum hopping distance 
+min_distance = 0.1                 # Minimum hopping distance
 
 # Onsite energy and magnetism
-onsite_energy = [0.0, 0.0]    # Onsite energy for each atom
-magnetic_moment = 1.0         # Magnetic moment
-magnetic_order = "++--"       # Magnetic order pattern
+onsite_energy = [0.0, 0.0, 0.0]    # Onsite energy for each atom
+magnetic_moment = 0.1         # Magnetic moment
+magnetic_order = "+-0"       # **important** Magnetic order pattern
 
 # Output settings
-output_filename = "band_structure"
+output_filename = "band_structure"   # **important**
 output_format = "png"
 savedir = "."
 
-# Debug options
+# some other options
 is_print_tb_model = false
 is_print_tb_model_hop = false
 is_check_flat_bands = true
-adjust_degenerate_bands = true
-energy_threshold = 0.001
+is_black_degenerate_bands = true  # plot the degenerate band in black, otherwise in blue/red for spin polarized
+energy_threshold = 0.00001
 ```
 
 ### Python API
@@ -133,9 +145,9 @@ If you use this package in your research, please cite:
 
 ```bibtex
 @software{pyamtb,
-  author = {Wang Dinghui},
+  author = {Dinghui Wang, Junting Zhang, Yu Xie},
   title = {PyAMTB: A Python package for tight-binding model calculations},
-  year = {2024},
+  year = {2025},
   url = {https://github.com/ooteki-teo/pyamtb.git}
 }
 ``` 
